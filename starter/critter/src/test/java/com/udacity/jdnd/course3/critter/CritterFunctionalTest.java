@@ -2,12 +2,12 @@ package com.udacity.jdnd.course3.critter;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.udacity.jdnd.course3.critter.pet.PetController;
-import com.udacity.jdnd.course3.critter.pet.PetDTO;
-import com.udacity.jdnd.course3.critter.pet.PetType;
-import com.udacity.jdnd.course3.critter.schedule.ScheduleController;
-import com.udacity.jdnd.course3.critter.schedule.ScheduleDTO;
-import com.udacity.jdnd.course3.critter.user.*;
+import com.udacity.jdnd.course3.critter.DTO.*;
+import com.udacity.jdnd.course3.critter.controller.PetController;
+import com.udacity.jdnd.course3.critter.controller.ScheduleController;
+import com.udacity.jdnd.course3.critter.controller.UserController;
+import com.udacity.jdnd.course3.critter.enums.EmployeeSkill;
+import com.udacity.jdnd.course3.critter.enums.PetType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -204,7 +204,7 @@ public class CritterFunctionalTest {
         sched3.setPetIds(sched2.getPetIds());
         sched3.setActivities(Sets.newHashSet(EmployeeSkill.SHAVING, EmployeeSkill.PETTING));
         sched3.setDate(LocalDate.of(2020, 3, 23));
-        scheduleController.createSchedule(sched3);
+        ScheduleDTO scheduleDTO =  scheduleController.createSchedule(sched3);
 
         /*
             We now have 3 schedule entries. The third schedule entry has the same employees as the 1st schedule
@@ -283,6 +283,7 @@ public class CritterFunctionalTest {
                 .map(e -> {
                     e.setSkills(activities);
                     e.setDaysAvailable(Sets.newHashSet(date.getDayOfWeek()));
+                    EmployeeDTO tempEmployee = userController.saveEmployee(e);
                     return userController.saveEmployee(e).getId();
                 }).collect(Collectors.toList());
         CustomerDTO cust = userController.saveCustomer(createCustomerDTO());
