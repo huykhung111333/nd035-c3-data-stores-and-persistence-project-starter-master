@@ -23,8 +23,7 @@ public class CustomerService {
 
     @Autowired
     PetRepository petRepository;
-    @Autowired
-    PetService petService;
+
     public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
         if (customerDTO.getId() != 0) {
             return new CustomerDTO();
@@ -50,34 +49,29 @@ public class CustomerService {
     }
 
     public List<CustomerDTO> getAllCus() {
-        List<CustomerDTO> resp = new LinkedList<>();
         List<Customer> customers = customerRepository.findAll();
-        resp = customers.stream().map(el -> {
+        List<CustomerDTO> resp = customers.stream().map(el -> {
             List<Long> petId = new ArrayList<>();
-            if (el.getPets() != null && !el.getPets().isEmpty()){
+            if (el.getPets() != null && !el.getPets().isEmpty()) {
                 petId = el.getPets().stream()
-                        .map(p -> p.getId())
+                        .map(Pet::getId)
                         .collect(Collectors.toList());
             }
-            return new CustomerDTO(el.getId(), el.getName(), el.getPhoneNumber(), el.getNotes(), petId);}).collect(Collectors.toList());
+            return new CustomerDTO(el.getId(), el.getName(), el.getPhoneNumber(), el.getNotes(), petId);
+        }).collect(Collectors.toList());
         return resp;
     }
 
-    public Customer getCustomerById(Long id){
-        return customerRepository.getOne(id);
-    }
-    public CustomerDTO getOwnerByPet(long petId){
+    public CustomerDTO getOwnerByPet(long petId) {
         Customer customer = customerRepository.getOwnerByPet(petId);
         List<Long> id = new ArrayList<>();
-        if (customer.getPets() != null && !customer.getPets().isEmpty()){
+        if (customer.getPets() != null && !customer.getPets().isEmpty()) {
             id = customer.getPets().stream()
-                    .map(p -> p.getId())
+                    .map(Pet::getId)
                     .collect(Collectors.toList());
         }
         return new CustomerDTO(customer.getId(), customer.getName(), customer.getPhoneNumber(), customer.getNotes(), id);
     }
-
-
 
 
 }

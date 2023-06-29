@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.DayOfWeek;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -64,10 +63,6 @@ public class EmployeeService {
 //    }
     public void setAvailability(Set<DayOfWeek> daysAvailable, long employeeId){
         Employee employee = employeeRepository.getOne(employeeId);
-        if(employee == null){
-            return;
-        }
-
         Set<DayOfWeek> utpDaysAvailable = new HashSet<>();
         if (employee.getDaysAvailable() != null && !employee.getDaysAvailable().isEmpty()){
             utpDaysAvailable.addAll(employee.getDaysAvailable());

@@ -13,11 +13,6 @@ import java.util.Set;
 
 @Repository
 public interface  EmployeeRepository extends JpaRepository<Employee, Long> {
-    @Query(value = "select e\n" +
-            "from Employee e\n" +
-            "where :dayAvailable MEMBER OF e.daysAvailable\n" +
-            "group by e.id")
-    List<Employee> findEmployeeByDaysAvailable(@Param("dayAvailable")DayOfWeek dayAvailable);
 
     @Query("SELECT e " +
             "FROM Employee e join e.daysAvailable da join e.skills s " +
