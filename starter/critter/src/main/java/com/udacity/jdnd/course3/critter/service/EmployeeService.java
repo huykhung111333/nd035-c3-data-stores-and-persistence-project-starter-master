@@ -73,7 +73,7 @@ public class EmployeeService {
     }
     public List<EmployeeDTO> findEmployeesForService(EmployeeRequestDTO employeeDTO) {
         List<Employee> employees = employeeRepository.findEmployeesForService(employeeDTO.getDate().getDayOfWeek(), employeeDTO.getSkills(), employeeDTO.getSkills().size());
-        List<EmployeeDTO> resp = employees.stream().map(el ->{
+        return employees.stream().map(el ->{
             EmployeeDTO e = new EmployeeDTO();
             e.setId(el.getId());
             e.setName(el.getName());
@@ -81,7 +81,6 @@ public class EmployeeService {
             e.setDaysAvailable(el.getDaysAvailable());
             return e;
         }).collect(Collectors.toList());
-        return resp;
     }
 
 }

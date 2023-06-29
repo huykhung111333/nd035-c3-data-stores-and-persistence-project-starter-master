@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,7 +49,7 @@ public class CustomerService {
 
     public List<CustomerDTO> getAllCus() {
         List<Customer> customers = customerRepository.findAll();
-        List<CustomerDTO> resp = customers.stream().map(el -> {
+        return customers.stream().map(el -> {
             List<Long> petId = new ArrayList<>();
             if (el.getPets() != null && !el.getPets().isEmpty()) {
                 petId = el.getPets().stream()
@@ -59,7 +58,6 @@ public class CustomerService {
             }
             return new CustomerDTO(el.getId(), el.getName(), el.getPhoneNumber(), el.getNotes(), petId);
         }).collect(Collectors.toList());
-        return resp;
     }
 
     public CustomerDTO getOwnerByPet(long petId) {
