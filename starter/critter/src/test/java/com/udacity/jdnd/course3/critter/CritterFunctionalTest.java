@@ -26,7 +26,7 @@ import java.util.stream.IntStream;
  * Students will need to configure the application to run these tests by adding application.properties file
  * to the test/resources directory that specifies the datasource. It can run using an in-memory H2 instance
  * and should not try to re-use the same datasource used by the rest of the app.
- *
+ * <p>
  * These tests should all pass once the project is complete.
  */
 @Transactional
@@ -296,11 +296,11 @@ public class CritterFunctionalTest {
         return scheduleController.createSchedule(createScheduleDTO(petIds, employeeIds, date, activities));
     }
 
-    private static void compareSchedules(ScheduleDTO sched1, ScheduleDTO sched2) {
-        Assertions.assertEquals(sched1.getPetIds(), sched2.getPetIds());
-        Assertions.assertEquals(sched1.getActivities(), sched2.getActivities());
-        Assertions.assertEquals(sched1.getEmployeeIds(), sched2.getEmployeeIds());
-        Assertions.assertEquals(sched1.getDate(), sched2.getDate());
+    private static void compareSchedules(ScheduleDTO schedule1, ScheduleDTO schedule2) {
+        Assertions.assertEquals(schedule1.getPetIds(), schedule2.getPetIds());
+        Assertions.assertEquals(schedule1.getActivities(), schedule2.getActivities());
+        Assertions.assertEquals(schedule1.getEmployeeIds(), schedule2.getEmployeeIds());
+        Assertions.assertEquals(schedule1.getDate(), schedule2.getDate());
     }
 
 }

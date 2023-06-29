@@ -51,7 +51,7 @@ public class PetService {
 
         pet = this.petRepository.save(pet);
 
-        Long customerId = pet.getCustomer() != null ? pet.getCustomer().getId() : 0L;
+        long customerId = pet.getCustomer() != null ? pet.getCustomer().getId() : 0L;
         return new PetDTO(pet.getId(), pet.getPetType(), pet.getName(), customerId, pet.getBirthDate(), pet.getNotes());
     }
 
@@ -62,15 +62,12 @@ public class PetService {
                 .orElse(new PetDTO());
     }
 
-    public List<PetDTO> getPetOfCus(Long id){
+    public List<PetDTO> getPetOfCus(Long id) {
         List<Pet> pets = this.petRepository.getPetOwnerId(id);
-        List<PetDTO> petDTO = new ArrayList<>();
-        if (pets != null && !pets.isEmpty()){
-            pets.stream().map(pet ->
-                            petDTO.add(new PetDTO(pet.getId(), pet.getPetType(), pet.getName(), id, pet.getBirthDate(), pet.getNotes())))
-                    .collect(Collectors.toList());
-        }
-        return petDTO;
+
+        return pets.stream()
+                .map(pet -> new PetDTO(pet.getId(), pet.getPetType(), pet.getName(), id, pet.getBirthDate(), pet.getNotes()))
+                .collect(Collectors.toList());
     }
     public List<PetDTO> getAllPets() {
         List<Pet> petList = petRepository.findAll();

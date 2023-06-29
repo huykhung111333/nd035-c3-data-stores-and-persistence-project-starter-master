@@ -13,6 +13,10 @@ public class PetController {
     @Autowired
     private PetService petService;
 
+    public PetController(PetService petService) {
+        this.petService = petService;
+    }
+
     @PostMapping
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
         return this.petService.savePet(petDTO);

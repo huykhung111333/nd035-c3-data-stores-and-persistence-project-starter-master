@@ -48,19 +48,6 @@ public class EmployeeService {
         return resp;
     }
 
-//    public List<Employee> getEmployeesByIDs(List<Long> ids) {
-//        return employeeRepository.findAllById(ids);
-//    }
-
-//    public List<EmployeeDTO> findEmployeeForService(EmployeeRequestDTO employeeRequestDTO) {
-//        DayOfWeek dayOfWeek = employeeRequestDTO.getDate().getDayOfWeek();
-//        List<Employee> employeeList = employeeRepository.findEmployeeByDaysAvailable(dayOfWeek);
-//
-//        return employeeList.stream()
-//                .filter(employee -> hasAllSkills(employee, employeeRequestDTO.getSkills()))
-//                .map(this::mapEntityToDto)
-//                .collect(Collectors.toList());
-//    }
     public void setAvailability(Set<DayOfWeek> daysAvailable, long employeeId){
         Employee employee = employeeRepository.getOne(employeeId);
         Set<DayOfWeek> utpDaysAvailable = new HashSet<>();
