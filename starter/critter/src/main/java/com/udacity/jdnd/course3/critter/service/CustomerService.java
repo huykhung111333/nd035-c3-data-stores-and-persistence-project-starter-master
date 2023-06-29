@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,11 +34,11 @@ public class CustomerService {
         BeanUtils.copyProperties(customerDTO, customer);
 
         if (customerDTO.getPetIds() != null && !customerDTO.getPetIds().isEmpty()) {
-            List<Pet> petsOfCus = this.petRepository.findAllById(customerDTO.getPetIds());
+            List<Pet> petsOfCus = petRepository.findAllById(customerDTO.getPetIds());
             customer.setPets(petsOfCus);
         }
 
-        customer = this.customerRepository.save(customer);
+        customer = customerRepository.save(customer);
 
         List<Long> idOfPet = customer.getPets()
                 .stream()
@@ -47,13 +49,34 @@ public class CustomerService {
                 customer.getNotes(), idOfPet);
     }
 
-    public List<Customer> getAllCustomer(){
-        return customerRepository.findAll();
+    public List<CustomerDTO> getAllCus() {
+        List<CustomerDTO> resp = new LinkedList<>();
+        List<Customer> customers = customerRepository.findAll();
+        resp = customers.stream().map(el -> {
+            List<Long> petId = new ArrayList<>();
+            if (el.getPets() != null && !el.getPets().isEmpty()){
+                petId = el.getPets().stream()
+                        .map(p -> p.getId())
+                        .collect(Collectors.toList());
+            }
+            return new CustomerDTO(el.getId(), el.getName(), el.getPhoneNumber(), el.getNotes(), petId);}).collect(Collectors.toList());
+        return resp;
     }
 
     public Customer getCustomerById(Long id){
         return customerRepository.getOne(id);
     }
+    public CustomerDTO getOwnerByPet(long petId){
+        Customer customer = customerRepository.getOwnerByPet(petId);
+        List<Long> id = new ArrayList<>();
+        if (customer.getPets() != null && !customer.getPets().isEmpty()){
+            id = customer.getPets().stream()
+                    .map(p -> p.getId())
+                    .collect(Collectors.toList());
+        }
+        return new CustomerDTO(customer.getId(), customer.getName(), customer.getPhoneNumber(), customer.getNotes(), id);
+    }
+
 
 
 
